@@ -1,3 +1,5 @@
+#!/bin/bash
+
 back() {
 case "$1" in
         1) echo "\033[47m";; #white

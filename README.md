@@ -6,14 +6,16 @@ Linux basic bash scripting and system research.
 
 Пишем bash-скрипт. Запускаем с одним текстовым параметром и должен выводить значение в консоли. Если в параметре укажем число, то выводится сообщение о некорректности ввода.
 
-![screenshot](/img/1.png)
+![screenshot](img/1.png)
 
 ## Part 2. Исследование системы
 
 Пишем bash-скрипт, который выводит информацию о системе указанную в задании. Запускается без параметра.
 
-![screenshot](/img/2.png)
-![screenshot](/img/2.1.png)
+![screenshot](img/2.png)
+![screenshot](img/2.1.png)
+![screenshot](img/2.2.png)
+
 
 **HOSTNAME** = _сетевое имя_  
 **TIMEZONE** = _временная зона в виде: **America/New_York UTC -5** (временная зона, должна браться из системы и быть корректной для текущего местоположения)_  
@@ -43,16 +45,81 @@ Linux basic bash scripting and system research.
 **Параметр 3** - это фон значений (после знака '=')  
 **Параметр 4** - это цвет шрифта значений (после знака '=')
 Фон и цвет не должны совпадать или же выводим ошибку. 
-![screenshot](/img/3.png)
-![screenshot](/img/3.1.png)
+
+![screenshot](img/3.png)
+
+![screenshot](img/3.1.png)
 
 ## Part 4. Конфигурирование визуального оформления вывода для скрипта исследования системы
+Написать bash-скрипт. За основу берется скрипт из [**Part 3**](#part-3-визуальное-оформление-вывода-для-скрипта-исследования-системы). Обозначения цветов аналогичные.  
+Скрипт запускается без параметров. Параметры задаются в конфигурационном файле до запуска скрипта.  
+Конфигурационный файл должен иметь вид:
+```
+column1_background=2
+column1_font_color=4
+column2_background=5
+column2_font_color=1
+```
 
-Берем скрипт с Part 3, но должен запускаться без параметров. Для этого до запуска создаем конфигурационный файл, где прописываем цвета фона и текста.
-![screenshot](/img/4.png)
-![screenshot](/img/4.2.png)
-После вывода информации о системе, делаем отступ и выводим цветовую схему
-![screenshot](/img/4.1.png)
+Если один или несколько параметров не заданы в конфигурационном файле, то цвет должен подставляться из цветовой схемы, заданной по умолчанию. (Выбор на усмотрение разработчика).
+
+После вывода информации о системе из [**Part 3**](#part-3-визуальное-оформление-вывода-для-скрипта-исследования-системы), нужно, сделав отступ в одну пустую строку, вывести цветовую схему в следующем виде:
+```
+Column 1 background = 2 (red)
+Column 1 font color = 4 (blue)
+Column 2 background = 5 (purple)
+Column 2 font color = 1 (white)
+```
+
+При запуске скрипта с цветовой схемой по умолчанию вывод должен иметь вид:
+```
+Column 1 background = default (black)
+Column 1 font color = default (white)
+Column 2 background = default (red)
+Column 2 font color = default (blue)
+
+![screenshot](img/4.png)
 
 ## Part 5. Исследование файловой системы
 
+Написать bash-скрипт. Скрипт запускается с одним параметром.  
+Параметр - это абсолютный или относительный путь до какой-либо директории. Параметр должен заканчиваться знаком '/', например:  
+`script05.sh /var/log/`
+
+Скрипт должен выводить следующую информацию о каталоге, указанном в параметре:
+- Общее число папок, включая вложенные
+- Топ 5 папок с самым большим весом в порядке убывания (путь и размер)
+- Общее число файлов
+- Число конфигурационных файлов (с расширением .conf), текстовых файлов, исполняемых файлов, логов (файлов с расширением .log), архивов, символических ссылок
+- Топ 10 файлов с самым большим весом в порядке убывания (путь, размер и тип)
+- Топ 10 исполняемых файлов с самым большим весом в порядке убывания (путь, размер и хеш)
+- Время выполнения скрипта
+
+Скрипт должен вывести на экран информацию в виде:
+
+```
+Total number of folders (including all nested ones) = 6  
+TOP 5 folders of maximum size arranged in descending order (path and size):  
+1 - /var/log/one/, 100 GB  
+2 - /var/log/two/, 100 MB  
+etc up to 5
+Total number of files = 30
+Number of:  
+Configuration files (with the .conf extension) = 1 
+Text files = 10  
+Executable files = 5
+Log files (with the extension .log) = 2  
+Archive files = 3  
+Symbolic links = 4  
+TOP 10 files of maximum size arranged in descending order (path, size and type):  
+1 - /var/log/one/one.exe, 10 GB, exe  
+2 - /var/log/two/two.log, 10 MB, log  
+etc up to 10  
+TOP 10 executable files of the maximum size arranged in descending order (path, size and MD5 hash of file)  
+1 - /var/log/one/one.exe, 10 GB, 3abb17b66815bc7946cefe727737d295  
+2 - /var/log/two/two.exe, 9 MB, 53c8fdfcbb60cf8e1a1ee90601cc8fe2  
+etc up to 10  
+Script execution time (in seconds) = 1.5
+
+![screenshot](img/5.png)
+![screenshot](img/5.1.png)

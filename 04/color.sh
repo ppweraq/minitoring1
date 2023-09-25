@@ -1,4 +1,4 @@
-# source ./main.sh
+#!/bin/bash
 
 back() {
 case "$1" in
